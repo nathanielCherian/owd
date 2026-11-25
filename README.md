@@ -138,6 +138,25 @@ The checks cover:
 - that probes with an unknown session id get no echo
 - that loss is under `--max-loss` (default 5%) in each direction
 
+## Comparing several servers
+
+`owd_compare.py` measures several servers at once and prints their delays side
+by side. Each server gets its own session, and all of them are probed from one
+loop with the same timing and packet sizes, so they share the same conditions
+on the local link.
+
+```sh
+python3 owd_compare.py nyc=203.0.113.5 lon=198.51.100.7:7000 lab=[2001:db8::1]:9910 -t 30
+```
+
+A server is given as `[NAME=]HOST[:PORT]`, with IPv6 addresses in brackets.
+Every second it prints one line per server with the average and jitter of RTT,
+uplink OWD and downlink OWD. At the end it prints a table sorted by RTT, with
+loss in each direction, averages, 95th percentiles, jitter and each server's
+clock offset. Use `--json` for the per-server summary, `--csv` for every probe
+of every server, and `--raw` if all the hosts' clocks are synchronised.
+It needs `owd_client.py` in the same directory and uses only the standard library.
+
 ## Protocol
 
 The full API is in [docs/API.md](docs/API.md): TCP messages, UDP packet
