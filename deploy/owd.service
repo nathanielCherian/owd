@@ -1,0 +1,22 @@
+[Unit]
+Description=OWD one-way delay measurement server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=-@ENVFILE@
+ExecStart=@BIN@ server $OWD_ARGS
+Restart=always
+RestartSec=2
+@SYSTEM_ONLY@DynamicUser=yes
+@SYSTEM_ONLY@StateDirectory=owd
+@SYSTEM_ONLY@NoNewPrivileges=yes
+@SYSTEM_ONLY@ProtectSystem=strict
+@SYSTEM_ONLY@ProtectHome=yes
+@SYSTEM_ONLY@PrivateTmp=yes
+@SYSTEM_ONLY@AmbientCapabilities=CAP_NET_BIND_SERVICE
+LimitNOFILE=65536
+
+[Install]
+WantedBy=@WANTEDBY@
